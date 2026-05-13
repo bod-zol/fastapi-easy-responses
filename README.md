@@ -1,6 +1,6 @@
 # FastAPI Easy Responses
 
-A simple package to easily handle and document all http exceptions and other errors easily.
+A simple package to easily handle and document all http exceptions and other errors.
 
 ## Development
 
