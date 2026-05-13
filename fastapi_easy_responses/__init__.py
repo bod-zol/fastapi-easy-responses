@@ -1,6 +1,11 @@
 """Convenience imports for the fastapi-easy-responses package."""
 
-from .exceptions import ErrorResponse, CustomAppException, get_responses, register_custom_exceptions
+from .exceptions import (
+    CustomAppException,
+    ErrorResponse,
+    get_responses,
+    register_custom_exceptions,
+)
 
 __all__ = [
     "ErrorResponse",

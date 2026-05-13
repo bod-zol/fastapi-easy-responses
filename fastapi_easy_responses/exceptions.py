@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class ErrorResponse(BaseModel):
     """Standardized error response model."""
+
     detail: str
 
 
