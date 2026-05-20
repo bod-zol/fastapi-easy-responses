@@ -4,4 +4,4 @@ A simple package to easily handle and document all http exceptions and other err
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](/LICENSE.md)
