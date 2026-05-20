@@ -12,17 +12,6 @@ in the project root folder, which will automatically install all required depend
 
 See more at [uv guides](https://docs.astral.sh/uv/guides/projects/).
 
-### Pre-commit hooks
-
-Also, after cloning the repo, run
-
-```bash
-uv run pre-commit install
-uv run pre-commit run --all-files
-```
-
-for your convenience. This will allow running the linter and auto-formatter before every commit.
-
 ### Rules of thumb
 
 Add new files to the `fastapi_easy_responses` folder.
@@ -38,6 +27,19 @@ uv add --dev foobar
 ```
 
 and commit both the changed [pyproject.toml](/pyproject.toml) and [uv.lock](/uv.lock) files.
+
+### Pre-commit hooks
+
+Also, after cloning the repo, run
+
+```bash
+uv run pre-commit install
+uv run pre-commit run --all-files
+```
+
+for your convenience. This will allow running the linter and auto-formatter before every commit.
+
+These checks also [run](/.github/workflows/ci.yml) for every pull request and after pushes to master.
 
 ## Tests
 
