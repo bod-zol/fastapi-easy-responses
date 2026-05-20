@@ -3,10 +3,17 @@ name = "fastapi-easy-responses"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+authors = [
+    { name = "Bod Zol", email = "5642056+bod-zol@users.noreply.github.com" }
+]
 requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.136.1",
 ]
+
+[build-system]
+requires = ["uv_build>=0.9.17,<0.10.0"]
+build-backend = "uv_build"
 
 [tool.ruff.lint]
 select = [
