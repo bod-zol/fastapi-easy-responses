@@ -23,6 +23,16 @@ uv run pre-commit run --all-files
 
 for your convenience. This will allow running the linter and auto-formatter before every commit.
 
+## Tests
+
+Run
+
+```bash
+uv run pytest
+```
+
+to run the tests.
+
 ## Contributing
 
 Add new files to the `fastapi_easy_responses` folder.
