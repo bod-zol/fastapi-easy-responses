@@ -12,7 +12,7 @@ uv sync
 
 in the project root folder, which will automatically install all required dependencies to the virtual environment uv provides.
 
-See more at [uv guides](https://docs.astral.sh/uv/guides/integration/fastapi/#using-uv-with-fastapi).
+See more at [uv guides](https://docs.astral.sh/uv/guides/projects/).
 
 Also, after cloning the repo, run
 
