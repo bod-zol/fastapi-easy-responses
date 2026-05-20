@@ -14,7 +14,7 @@ See more at [uv guides](https://docs.astral.sh/uv/guides/projects/).
 
 ### Rules of thumb
 
-Add new files to the `fastapi_easy_responses` folder.
+Add new files to the `src/fastapi_easy_responses` folder.
 
 Add new tests to the `tests` folder.
 
