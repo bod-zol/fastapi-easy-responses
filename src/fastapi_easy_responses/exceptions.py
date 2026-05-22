@@ -49,6 +49,11 @@ def get_responses(*exception_classes: type[Exception]) -> dict:
     """
     Auto-generate FastAPI response documentation from exception registry.
 
+    Remarks:
+     - Handles only exceptions that are subclasses of CustomAppException.
+     - If multiple exceptions share the same status code,
+       only the last one will be documented for that code.
+
     Usage:
         @router.post("...", responses=get_responses(DuplicateItemError))
         async def my_endpoint(...): ...
