@@ -1,6 +1,114 @@
 # FastAPI Easy Responses
 
-A simple package to easily handle and document all http exceptions and other errors in a FastAPI app.
+A simple package to easily handle and document all HTTP exceptions and other errors in a FastAPI app.
+
+## Installation
+
+Coming soon...
+
+```bash
+uv add fastapi-easy-responses
+```
+
+```bash
+pip install fastapi-easy-responses
+```
+
+## Usage
+
+```python
+# main
+from fastapi_easy_responses import register_custom_exceptions
+app = FastAPI()
+register_custom_exceptions(app) # 1.
+
+# exceptions
+from fastapi_easy_responses import CustomAppException
+class DuplicateItemError(CustomAppException): # 2.
+    status_code = 409
+    description = "Duplicate item already exists"
+
+# crud
+async def create_item(session: AsyncSession, item: Item) -> Item:
+    try:
+        session.add(item)
+        await session.commit()
+        await session.refresh(item)
+        return item
+    except IntegrityError as e:
+        await session.rollback()
+        raise DuplicateItemError() from e # 3.
+
+# router
+from fastapi_easy_responses import get_responses
+@router.post(
+    "",
+    response_model=ItemRead,
+    status_code=201,
+    responses=get_responses(DuplicateItemError), # 4.
+)
+async def create_item_endpoint(item: ItemCreate, session: AsyncSession):
+    db_item = Item.model_validate(item)
+    return await create_item(session, db_item) # 5.
+```
+
+This gives you a centralized, more consistent and easier-to-maintain exception handling and documentation.
+
+Note the following:
+
+  1. Call `register_custom_exceptions(app)` to activate the centralized exception handler for `CustomAppException`s.
+  1. Inherit your exception class from `CustomAppException`, and provide the required `status_code` and `description` as class variables: as such, these are static per exception class, not dynamic per raise. You'll use this exception class everywhere.
+  1. Raise your exception in any operation.
+  1. Use the same exception class to generate the OpenAPI documentation. No magic numbers and strings needed, so you have proper autocomplete.
+  1. No need to manually catch and convert your exception to HTTPException, the centralized exception handler does it for you. Or more precisely, it returns the same JSONResponse as the default exception handler for HTTPException would.
+
+## Why
+
+On top of the above, here is a comparison, what you would usually do in a FastAPI app.
+
+```python
+# exceptions
+class DuplicateItemError(ValueError):
+    pass
+
+# crud
+async def create_item(session: AsyncSession, item: Item) -> Item:
+    try:
+        session.add(item)
+        await session.commit()
+        await session.refresh(item)
+        return item
+    except IntegrityError as e:
+        await session.rollback()
+        raise DuplicateItemError("An item with this name already exists.") from e
+
+# router
+@router.post(
+    "",
+    response_model=ItemRead,
+    status_code=201,
+    responses={
+        409: {"model": Message, "description": "An item with this name already exists."}
+    }
+)
+async def create_item_endpoint(item: ItemCreate, session: AsyncSession):
+    try:
+        db_item = Item.model_validate(item)
+        return await create_item(session, db_item)
+    except DuplicateItemError as e:
+        raise HTTPException(status_code=409, detail=str(e)) from e
+```
+
+Which means you have to manually maintain all the original exception to HTTPException mappings. If you forget it, your unhandled exception will raise a generic internal server error. It also requires additional manual work to provide consistent documentation.
+
+## Similar packages
+
+There are similar packages with similar purpose, like
+
+- [APIException](https://github.com/akutayural/APIException)
+- [fastapi-problem](https://github.com/NRWLDev/fastapi-problem)
+
+This package is simpler for basic use-cases, which may or may not be what you want. This package doesn't introduce new response schemas, custom error codes, doesn't provide logging (yet); but gives you the least amount of code you have to write.
 
 ## License
 
