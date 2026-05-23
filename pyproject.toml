@@ -8,7 +8,7 @@ authors = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "fastapi[standard]>=0.126.0,<0.200.0",
+    "fastapi[standard]>=0.136.1,<0.200.0",
 ]
 
 [build-system]
