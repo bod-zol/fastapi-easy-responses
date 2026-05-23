@@ -37,6 +37,7 @@ jobs:
       - run: uv run ruff format --check .
       
       - name: Configure FastAPI version
+        shell: bash
         run: |
           if [ "${{ matrix.fastapi-version }}" = "latest" ]; then
             echo "WITH_ARGS=" >> $GITHUB_ENV
