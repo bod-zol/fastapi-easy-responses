@@ -15,14 +15,14 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
-        fastapi-version: ["0.126.0", "0.132.0", "latest"]
+        with-fastapi-version: ["--with fastapi==0.126.0", "--with fastapi==0.132.0", ""]
         include:
           - os: macos-latest
             python-version: "3.14"
-            fastapi-version: "latest"
+            with-fastapi-version: ""
           - os: windows-latest
             python-version: "3.14"
-            fastapi-version: "latest"
+            with-fastapi-version: ""
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
@@ -36,19 +36,10 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       
-      - name: Configure FastAPI version
-        shell: bash
-        run: |
-          if [ "${{ matrix.fastapi-version }}" = "latest" ]; then
-            echo "WITH_ARGS=" >> $GITHUB_ENV
-          else
-            echo "WITH_ARGS=--with fastapi==${{ matrix.fastapi-version }}" >> $GITHUB_ENV
-          fi
-
       - name: Show resolved FastAPI version
         run: >
-          uv run $WITH_ARGS
+          uv run ${{ matrix.with-fastapi-version }}
           python -c "import fastapi; print(f'FastAPI version: {fastapi.__version__}')"
       
       - name: Run tests
-        run: uv run $WITH_ARGS pytest
+        run: uv run ${{ matrix.with-fastapi-version }} pytest
