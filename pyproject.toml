@@ -1,7 +1,7 @@
 [project]
 name = "fastapi-easy-responses"
 version = "0.1.0"
-description = "Add your description here"
+description = "A simple package to easily handle and document all HTTP exceptions and other errors in a FastAPI app."
 readme = "README.md"
 authors = [
     { name = "Bod Zol", email = "5642056+bod-zol@users.noreply.github.com" }
