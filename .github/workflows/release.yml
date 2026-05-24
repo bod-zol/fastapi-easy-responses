@@ -34,12 +34,12 @@ jobs:
       - name: Smoke test (wheel)
         run: >
           uv run --isolated --no-project --with dist/*.whl
-          python -c "import fastapi_easy_responses; print(f'{fastapi.__name__}'); print('OK');"
+          python -c "import fastapi_easy_responses; print(f'{fastapi_easy_responses.__name__}'); print('OK');"
         
       - name: Smoke test (source distribution)
         run: >
           uv run --isolated --no-project --with dist/*.tar.gz
-          python -c "import fastapi_easy_responses; print(f'{fastapi.__name__}'); print('OK');"
+          python -c "import fastapi_easy_responses; print(f'{fastapi_easy_responses.__name__}'); print('OK');"
         
       - name: Publish (to Test Pypi)
         run: uv publish --trusted-publishing always --publish-url https://test.pypi.org/legacy/
