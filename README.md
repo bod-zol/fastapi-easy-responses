@@ -4,8 +4,6 @@ A simple package to easily handle and document all HTTP exceptions and other err
 
 ## Installation
 
-Coming soon...
-
 ```bash
 uv add fastapi-easy-responses
 ```
