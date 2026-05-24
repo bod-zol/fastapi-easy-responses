@@ -62,7 +62,7 @@ Note the following:
 
 ## Why
 
-On top of the above, here is a comparison, what you would usually do in a FastAPI app.
+For comparison, this is something like what you would usually do in a FastAPI app.
 
 ```python
 # exceptions
