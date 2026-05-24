@@ -310,7 +310,7 @@ wheels = [
 
 [[package]]
 name = "fastapi-easy-responses"
-version = "0.0.1.2"
+version = "0.0.1.4"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },

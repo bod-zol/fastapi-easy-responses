@@ -1,6 +1,6 @@
 [project]
 name = "fastapi-easy-responses"
-version = "0.0.1.3"
+version = "0.0.1.4"
 description = "A simple package to easily handle and document all HTTP exceptions and other errors in a FastAPI app."
 readme = "README.md"
 authors = [
