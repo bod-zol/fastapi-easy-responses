@@ -1,0 +1,45 @@
+#https://github.com/astral-sh/trusted-publishing-examples/blob/main/.github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    tags:
+      # Publish on any tag starting with a `v`, e.g., v1.2.3
+      - v*
+
+jobs:
+  pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    # Environment and permissions trusted publishing.
+    environment:
+      # Create this environment in the GitHub repository under Settings -> Environments
+      name: testpypi
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          python-version: "3.14"
+          enable-cache: true
+          
+      - name: Build
+        run: uv build
+        
+      - name: Smoke test (wheel)
+        run: >
+          uv run --isolated --no-project --with dist/*.whl
+          python -c "import fastapi_easy_responses; print(f'{fastapi.__name__}'); print('OK');"
+        
+      - name: Smoke test (source distribution)
+        run: >
+          uv run --isolated --no-project --with dist/*.tar.gz
+          python -c "import fastapi_easy_responses; print(f'{fastapi.__name__}'); print('OK');"
+        
+      - name: Publish (to Test Pypi)
+        run: uv publish --trusted-publishing always --publish-url https://test.pypi.org/legacy/
