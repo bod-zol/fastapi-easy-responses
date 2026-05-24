@@ -11,6 +11,10 @@ dependencies = [
     "fastapi[standard]>=0.126.0,<0.200.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/bod-zol/fastapi-easy-responses"
+Repository = "https://github.com/bod-zol/fastapi-easy-responses"
+
 [build-system]
 requires = ["uv_build>=0.11.14,<0.12.0"]
 build-backend = "uv_build"
