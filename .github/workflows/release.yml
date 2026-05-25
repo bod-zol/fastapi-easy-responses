@@ -11,7 +11,7 @@ jobs:
     # Environment and permissions trusted publishing.
     environment:
       # Create this environment in the GitHub repository under Settings -> Environments
-      name: testpypi
+      name: pypi
       deployment: false
     permissions:
       id-token: write
@@ -39,5 +39,5 @@ jobs:
           uv run --isolated --no-project --with dist/*.tar.gz
           python -c "import fastapi_easy_responses; print(f'{fastapi_easy_responses.__name__}'); print('OK');"
         
-      - name: Publish (to Test Pypi)
-        run: uv publish --trusted-publishing always --publish-url https://test.pypi.org/legacy/
+      - name: Publish
+        run: uv publish --trusted-publishing always
