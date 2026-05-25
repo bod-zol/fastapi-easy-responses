@@ -24,7 +24,7 @@ register_custom_exceptions(app) # 1.
 from fastapi_easy_responses import CustomAppException
 class DuplicateItemError(CustomAppException): # 2.
     status_code = 409
-    description = "Duplicate item already exists"
+    description = "An item with this name already exists."
 
 # crud
 async def create_item(session: AsyncSession, item: Item) -> Item:
@@ -59,6 +59,16 @@ Note the following:
   1. Raise your exception in any operation.
   1. Use the same exception class to generate the OpenAPI documentation. No magic numbers and strings needed, so you have proper autocomplete.
   1. No need to manually catch and convert your exception to HTTPException, the centralized exception handler does it for you. Or more precisely, it returns the same JSONResponse as the default exception handler for HTTPException would.
+
+### Result
+
+If you open the documentation, you'll see the following:
+
+![Documentation sample](./docs/sample-doc.png)
+
+And if you try it out, you'll see the actual response matches the documentation as expected:
+
+![Response sample](./docs/sample-response.png)
 
 ## Why
 
