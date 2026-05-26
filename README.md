@@ -55,10 +55,12 @@ This gives you a centralized, more consistent and easier-to-maintain exception h
 Note the following:
 
   1. Call `register_custom_exceptions(app)` to activate the centralized exception handler for `CustomAppException`s.
-  1. Inherit your exception class from `CustomAppException`, and provide the required `status_code` and `description` as class variables: as such, these are static per exception class, not dynamic per raise. You'll use this exception class everywhere.
+  1. Inherit your exception class from `CustomAppException`, and provide the required `status_code` and `description` as class variables: as such, these are static per exception class, not dynamic per raise.
   1. Raise your exception in any operation.
   1. Use the same exception class to generate the OpenAPI documentation. No magic numbers and strings needed, so you have proper autocomplete.
   1. No need to manually catch and convert your exception to HTTPException, the centralized exception handler does it for you. Or more precisely, it returns the same JSONResponse as the default exception handler for HTTPException would.
+
+This package doesn't introduce new response schemas or custom error codes, so adoption is easy: the exact same response is returned as with the pure FastAPI implementation, so you don't have to worry about rewriting your other services or frontend.
 
 ### Result
 
@@ -107,7 +109,10 @@ async def create_item_endpoint(item: ItemCreate, session: AsyncSession):
         raise HTTPException(status_code=409, detail=str(e)) from e
 ```
 
-Which means you have to manually maintain all the original exception to HTTPException mappings. If you forget it, your unhandled exception will raise a generic internal server error. It also requires additional manual work to provide consistent documentation.
+Which means
+
+- You have to manually maintain all the thrown exception to HTTPException mappings. If you forget it, your unhandled exception will raise a generic internal server error.
+- It also requires additional manual work to provide consistent documentation.
 
 ## Similar packages
 
@@ -116,7 +121,7 @@ There are similar packages with similar purpose, like
 - [APIException](https://github.com/akutayural/APIException)
 - [fastapi-problem](https://github.com/NRWLDev/fastapi-problem)
 
-This package is simpler for basic use-cases, which may or may not be what you want. This package doesn't introduce new response schemas, custom error codes, doesn't provide logging (yet); but gives you the least amount of code you have to write.
+This package is simpler for basic use-cases, which may or may not be what you want. This package doesn't introduce new response schemas or custom error codes, doesn't provide logging (yet); but gives you the least amount of code you have to write to achieve the same functionality.
 
 ## License
 
