@@ -11,11 +11,18 @@ class ErrorResponse(BaseModel):
 
 class CustomAppException(Exception):
     """Base class for custom application exceptions with HTTP metadata.
-    Subclasses will automatically register their status code and description.
+
+    Subclasses should have their status_code and description class properties set.
+    These will automatically get registered upon definition.
+
+    A subclass may optionally include a `detail` attribute for dynamic error messages,
+    which will be used in the response instead of the static description if present.
+    Documentation will still use the static description.
     """
 
     status_code: int = status.HTTP_500_INTERNAL_SERVER_ERROR
     description: str = "Internal server error"
+
     registry: dict[str, dict[str, object]] = {}
 
     def __init_subclass__(cls, **kwargs):
@@ -39,9 +46,10 @@ def register_custom_exceptions(app: FastAPI) -> None:
         request: Request, exc: CustomAppException
     ) -> JSONResponse:
         """Convert CustomAppException to JSONResponse with appropriate status code."""
+        detail = getattr(exc, "detail", exc.description)
         return JSONResponse(
             status_code=exc.status_code,
-            content=ErrorResponse(detail=exc.description).model_dump(),
+            content=ErrorResponse(detail=detail).model_dump(),
         )
 
 
