@@ -97,6 +97,14 @@ raise ItemNotFoundError(123)
 )
 ```
 
+In this case, the documentation will still show the static description:
+
+![Documentation sample](./docs/sample-dynamic-doc.png)
+
+But the actual response will contain the dynamic detail:
+
+![Response sample](./docs/sample-dynamic-response.png)
+
 ## Why
 
 For comparison, this is something like what you would usually do in a FastAPI app.
