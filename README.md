@@ -72,6 +72,39 @@ And if you try it out, you'll see the actual response matches the documentation 
 
 ![Response sample](./docs/sample-response.png)
 
+### Dynamic detail
+
+By default the response will contain the static description of the exception, which is usually enough.
+
+But you can also optionally include a `detail` attribute in your exception instance, which will be used in the response instead of the static description if present.
+
+Example:
+
+```python
+class ItemNotFoundError(CustomAppException):
+    status_code = 404
+    description = "Item not found"
+
+    def __init__(self, item_id: int):
+        self.detail = f"Item with ID {item_id} not found"
+
+# Raise with dynamic detail
+raise ItemNotFoundError(123)
+
+# Use in documentation as usual
+@router.get(
+    "/{item_id}", response_model=ItemRead, responses=get_responses(ItemNotFoundError)
+)
+```
+
+In this case, the documentation will still show the static description:
+
+![Documentation sample](./docs/sample-dynamic-doc.png)
+
+But the actual response will contain the dynamic detail:
+
+![Response sample](./docs/sample-dynamic-response.png)
+
 ## Why
 
 For comparison, this is something like what you would usually do in a FastAPI app.

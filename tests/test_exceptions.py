@@ -1,9 +1,6 @@
-from fastapi_easy_responses import CustomAppException, ErrorResponse, get_responses
+from common_test_exceptions import DuplicateItemError, DynamicItemNotFoundError
 
-
-class DuplicateItemError(CustomAppException):
-    status_code = 409
-    description = "Duplicate item already exists"
+from fastapi_easy_responses import ErrorResponse, get_responses
 
 
 def test_get_responses_returns_registered_error_metadata():
@@ -15,12 +12,16 @@ def test_get_responses_returns_registered_error_metadata():
     assert responses[409]["model"] is ErrorResponse
 
 
-def test_get_responses_returns_multiple_registered_exceptions():
-    class NotFoundError(CustomAppException):
-        status_code = 404
-        description = "Item not found"
+def test_get_responses_returns_with_static_description_even_if_has_detail_attr():
+    responses = get_responses(DynamicItemNotFoundError)
 
-    responses = get_responses(DuplicateItemError, NotFoundError)
+    assert 404 in responses
+    assert responses[404]["description"] == "Item not found"
+    assert responses[404]["model"] is ErrorResponse
+
+
+def test_get_responses_returns_multiple_registered_exceptions():
+    responses = get_responses(DuplicateItemError, DynamicItemNotFoundError)
 
     assert len(responses) == 2
 
