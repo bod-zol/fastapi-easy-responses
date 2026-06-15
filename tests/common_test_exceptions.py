@@ -1,4 +1,8 @@
-from fastapi_easy_responses.exceptions import CustomAppException
+from fastapi_easy_responses.exceptions import (
+    CustomAppException,
+    HeaderDescription,
+    ResponseHeaderSchema,
+)
 
 
 class DuplicateItemError(CustomAppException):
@@ -11,4 +15,20 @@ class DynamicItemNotFoundError(CustomAppException):
     description = "Item not found"
 
     def __init__(self, item_id: int):
-        self.detail = f"Item with ID {item_id} not found"
+        super().__init__(detail=f"Item with ID {item_id} not found")
+
+
+class ErrorWithHeader(CustomAppException):
+    status_code = 401
+    description = "Invalid credentials"
+    header_descriptions = {
+        "WWW-Authenticate": HeaderDescription(
+            description="Available authentication methods",
+            schema=ResponseHeaderSchema(type="string"),
+        )
+    }
+
+    def __init__(self):
+        super().__init__(
+            headers={"WWW-Authenticate": "Bearer"},
+        )

@@ -86,7 +86,7 @@ class ItemNotFoundError(CustomAppException):
     description = "Item not found"
 
     def __init__(self, item_id: int):
-        self.detail = f"Item with ID {item_id} not found"
+        super().__init__(detail=f"Item with ID {item_id} not found")
 
 # Raise with dynamic detail
 raise ItemNotFoundError(123)

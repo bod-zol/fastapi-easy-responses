@@ -1,4 +1,8 @@
-from common_test_exceptions import DuplicateItemError, DynamicItemNotFoundError
+from common_test_exceptions import (
+    DuplicateItemError,
+    DynamicItemNotFoundError,
+    ErrorWithHeader,
+)
 
 from fastapi_easy_responses import ErrorResponse, get_responses
 
@@ -43,3 +47,12 @@ def test_get_responses_ignores_unregistered_exceptions():
         pass
 
     assert get_responses(SomeOtherError) == {}
+
+
+def test_get_responses_includes_header_descriptions_when_present():
+    responses = get_responses(ErrorWithHeader)
+
+    assert 401 in responses
+    assert "headers" in responses[401]
+    assert "WWW-Authenticate" in responses[401]["headers"]
+    assert responses[401]["headers"]["WWW-Authenticate"]["schema"]["type"] == "string"

@@ -1,4 +1,8 @@
-from common_test_exceptions import DuplicateItemError, DynamicItemNotFoundError
+from common_test_exceptions import (
+    DuplicateItemError,
+    DynamicItemNotFoundError,
+    ErrorWithHeader,
+)
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
 
@@ -13,7 +17,7 @@ def create_app(*, to_throw: CustomAppException) -> FastAPI:
     app = FastAPI()
     register_custom_exceptions(app)
 
-    @app.post("/items", responses=get_responses(DuplicateItemError))
+    @app.post("/items", responses=get_responses(to_throw.__class__))
     def create_item():
         raise to_throw
 
@@ -63,3 +67,13 @@ def test_app_returns_same_response_as_default_fastapi_handler_for_custom_excepti
 
     assert ref_response.status_code == test_response.status_code
     assert ref_response.json() == test_response.json()
+
+
+def test_exception_returns_headers():
+    client = TestClient(create_app(to_throw=ErrorWithHeader()))
+
+    response = client.post("/items")
+
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Invalid credentials"}
+    assert response.headers.get("WWW-Authenticate") == "Bearer"
