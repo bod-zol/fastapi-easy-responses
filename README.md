@@ -76,7 +76,7 @@ And if you try it out, you'll see the actual response matches the documentation 
 
 By default the response will contain the static description of the exception, which is usually enough.
 
-But you can also optionally include a `detail` attribute in your exception instance, which will be used in the response instead of the static description if present.
+But you can also provide the `detail` parameter to the base `CustomAppException` class, which will be used in the response instead of the static description if present.
 
 Example:
 
@@ -86,7 +86,7 @@ class ItemNotFoundError(CustomAppException):
     description = "Item not found"
 
     def __init__(self, item_id: int):
-        self.detail = f"Item with ID {item_id} not found"
+        super().__init__(detail=f"Item with ID {item_id} not found")
 
 # Raise with dynamic detail
 raise ItemNotFoundError(123)
@@ -104,6 +104,43 @@ In this case, the documentation will still show the static description:
 But the actual response will contain the dynamic detail:
 
 ![Response sample](./docs/sample-dynamic-response.png)
+
+### Headers
+
+You can also include custom headers in your responses by providing the `headers` parameter to the base `CustomAppException` class. This allows you to specify headers that should be included in the response when the exception is raised.
+
+For documentation purposes, you can also define a `header_descriptions` attribute in your exception class. You can use anything here that you would normally use directly in the `responses` parameter of your route decorator.
+
+Example:
+
+```python
+class UnauthorizedError(CustomAppException):
+    status_code = status.HTTP_401_UNAUTHORIZED
+    description = "Invalid credentials"
+    header_descriptions = {
+        "WWW-Authenticate": {
+            "description": "Available authentication methods",
+            "schema": {"type": "string"},
+        }
+    }
+
+    def __init__(self):
+        super().__init__(headers={"WWW-Authenticate": "Bearer"})
+
+# Raise where appropriate
+raise UnauthorizedError()
+
+# Use in documentation as usual
+@router.get("/me", responses=get_responses(UnauthorizedError))
+```
+
+In this case, the documentation will show the given header descriptions:
+
+![Documentation sample](./docs/sample-header-doc.png)
+
+And the actual response will contain the given headers:
+
+![Response sample](./docs/sample-header-response.png)
 
 ## Why
 
