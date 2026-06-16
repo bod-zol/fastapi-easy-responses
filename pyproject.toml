@@ -19,8 +19,8 @@ Repository = "https://github.com/bod-zol/fastapi-easy-responses"
 requires = ["uv_build>=0.11.14,<0.12.0"]
 build-backend = "uv_build"
 
-# [tool.pytest]
-# filterwarnings = ['error']
+[tool.pytest]
+filterwarnings = ['error']
 
 [tool.ruff.lint]
 select = [

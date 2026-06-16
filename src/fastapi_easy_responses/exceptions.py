@@ -5,20 +5,6 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 
-class ResponseHeaderSchema(BaseModel):
-    """Simple model to represent the type field of the schema
-    in a response header definition."""
-
-    type: str
-
-
-class HeaderDescription(BaseModel):
-    """A single response header model."""
-
-    description: str
-    schema: ResponseHeaderSchema
-
-
 class ErrorResponse(BaseModel):
     """Standardized error response model."""
 
@@ -40,7 +26,7 @@ class CustomAppException(Exception):
 
     status_code: int = status.HTTP_500_INTERNAL_SERVER_ERROR
     description: str = "Internal server error"
-    header_descriptions: dict[str, HeaderDescription] | None = None
+    header_descriptions: dict[str, dict[str, object]] | None = None
 
     registry: dict[str, dict[str, object]] = {}
 
@@ -109,16 +95,11 @@ def get_responses(*exception_classes: type[Exception]) -> dict:
         exc_name = exc_cls.__name__
         if exc_name in CustomAppException.registry:
             exc_info = CustomAppException.registry[exc_name]
-            responses[exc_info["status_code"]] = {
+            one_response = {
                 "description": exc_info["description"],
                 "model": ErrorResponse,
             }
             if exc_info.get("header_descriptions"):
-                headers_map: dict = {}
-                for header_name, header_info in exc_info["header_descriptions"].items():
-                    headers_map[header_name] = {
-                        "description": header_info.description,
-                        "schema": header_info.schema.model_dump(),
-                    }
-                responses[exc_info["status_code"]]["headers"] = headers_map
+                one_response["headers"] = exc_info["header_descriptions"]
+            responses[exc_info["status_code"]] = one_response
     return responses

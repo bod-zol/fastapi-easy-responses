@@ -1,8 +1,4 @@
-from fastapi_easy_responses.exceptions import (
-    CustomAppException,
-    HeaderDescription,
-    ResponseHeaderSchema,
-)
+from fastapi_easy_responses.exceptions import CustomAppException
 
 
 class DuplicateItemError(CustomAppException):
@@ -22,10 +18,10 @@ class ErrorWithHeader(CustomAppException):
     status_code = 401
     description = "Invalid credentials"
     header_descriptions = {
-        "WWW-Authenticate": HeaderDescription(
-            description="Available authentication methods",
-            schema=ResponseHeaderSchema(type="string"),
-        )
+        "WWW-Authenticate": {
+            "description": "Available authentication methods",
+            "schema": {"type": "string"},
+        }
     }
 
     def __init__(self):
