@@ -7,7 +7,7 @@ By default, always the latest minor version is supported with security patches.
 | Version | Supported          |
 | ------- | ------------------ |
 | 0.x.y   | :white_check_mark: |
-| < 0.x.0 | :x:                |
+| < 0.x.y | :x:                |
 
 ## Reporting a Vulnerability
 
