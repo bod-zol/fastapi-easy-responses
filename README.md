@@ -66,11 +66,19 @@ This package doesn't introduce new response schemas or custom error codes, so ad
 
 If you open the documentation, you'll see the following:
 
-![Documentation sample](./docs/sample-doc.png)
+<img
+    src="https://raw.githubusercontent.com/bod-zol/fastapi-easy-responses/refs/heads/master/docs/sample-doc.png"
+    alt="Documentation sample"
+    style="width: 500px; max-width: 100%;"
+/>
 
 And if you try it out, you'll see the actual response matches the documentation as expected:
 
-![Response sample](./docs/sample-response.png)
+<img
+    src="https://raw.githubusercontent.com/bod-zol/fastapi-easy-responses/refs/heads/master/docs/sample-response.png"
+    alt="Response sample"
+    style="width: 500px; max-width: 100%;"
+/>
 
 ### Dynamic detail
 
@@ -99,11 +107,19 @@ raise ItemNotFoundError(123)
 
 In this case, the documentation will still show the static description:
 
-![Documentation sample](./docs/sample-dynamic-doc.png)
+<img
+    src="https://raw.githubusercontent.com/bod-zol/fastapi-easy-responses/refs/heads/master/docs/sample-dynamic-doc.png"
+    alt="Documentation sample"
+    style="width: 500px; max-width: 100%;"
+/>
 
 But the actual response will contain the dynamic detail:
 
-![Response sample](./docs/sample-dynamic-response.png)
+<img
+    src="https://raw.githubusercontent.com/bod-zol/fastapi-easy-responses/refs/heads/master/docs/sample-dynamic-response.png"
+    alt="Response sample"
+    style="width: 500px; max-width: 100%;"
+/>
 
 ### Headers
 
@@ -136,11 +152,19 @@ raise UnauthorizedError()
 
 In this case, the documentation will show the given header descriptions:
 
-![Documentation sample](./docs/sample-header-doc.png)
+<img
+    src="https://raw.githubusercontent.com/bod-zol/fastapi-easy-responses/refs/heads/master/docs/sample-header-doc.png"
+    alt="Documentation sample"
+    style="width: 500px; max-width: 100%;"
+/>
 
 And the actual response will contain the given headers:
 
-![Response sample](./docs/sample-header-response.png)
+<img
+    src="https://raw.githubusercontent.com/bod-zol/fastapi-easy-responses/refs/heads/master/docs/sample-header-response.png"
+    alt="Response sample"
+    style="width: 500px; max-width: 100%;"
+/>
 
 ## Why
 
