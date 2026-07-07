@@ -9,6 +9,4 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    cooldown:
-      default-days: 10
     versioning-strategy: increase-if-necessary # So that fastapi dependency is only bumped in uv.lock, and not changed in pyproject.toml if not needed
