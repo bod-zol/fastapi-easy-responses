@@ -34,6 +34,10 @@ select = [
     "UP", # pyupgrade
 ]
 
+[tool.ruff]
+# Disable formatting in Markdown files
+extend-exclude = ["*.md"]
+
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
